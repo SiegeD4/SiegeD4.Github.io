@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Siege — Digital Artist & Character Designer. Anime commissions, fan art, and VTuber model design." />
+  <title>Siege — Digital Artist · Character Designer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#050507',
+            ash: '#0c0c10',
+            steel: '#14141a',
+            slate: '#1c1c24',
+            blood: '#c8102e',
+            crimson: '#e11d3a',
+            neon: '#ff2a4a',
+            cyan: '#00f0ff',
+            violet: '#a855f7',
+            mist: '#a1a1aa',
+            frost: '#e4e4e7',
+          },
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          boxShadow: {
+            'red-glow': '0 0 22px rgba(255, 42, 74, 0.65), 0 0 50px rgba(225, 29, 58, 0.4), 0 0 90px rgba(180, 0, 30, 0.25)',
+            'red-glow-lg': '0 0 35px rgba(255, 42, 74, 0.75), 0 0 80px rgba(225, 29, 58, 0.5), 0 0 140px rgba(180, 0, 30, 0.35)',
+            'cyan-glow': '0 0 15px rgba(0, 240, 255, 0.35)',
+          },
+          animation: {
+            'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glitch': 'glitch 4s infinite',
+            'scan': 'scan 8s linear infinite',
+            'flicker': 'flicker 5s infinite',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(225, 29, 58, 0.4)' },
+              '50%': { boxShadow: '0 0 40px rgba(225, 29, 58, 0.7), 0 0 80px rgba(200, 16, 46, 0.3)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            glitch: {
+              '0%, 90%, 100%': { transform: 'translate(0)', filter: 'none' },
+              '92%': { transform: 'translate(-2px, 1px)', filter: 'hue-rotate(-10deg)' },
+              '94%': { transform: 'translate(2px, -1px)' },
+              '96%': { transform: 'translate(-1px, 2px)', filter: 'hue-rotate(10deg)' },
+            },
+            scan: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(100vh)' },
+            },
+            flicker: {
+              '0%, 100%': { opacity: '1' },
+              '41%': { opacity: '1' },
+              '42%': { opacity: '0.8' },
+              '43%': { opacity: '1' },
+              '45%': { opacity: '0.9' },
+              '46%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/jpeg" href="assets/avatar.jpg" />
+</head>
+<body class="bg-void text-frost font-body antialiased overflow-x-hidden">
+
+  <!-- Global overlays -->
+  <div class="scanlines scanlines-animated" aria-hidden="true"></div>
+  <div class="scanline-beam" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <canvas id="particles" class="particles" aria-hidden="true"></canvas>
+
+  <!-- ========== NAV ========== -->
+  <header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <div class="nav-inner mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 md:h-20 items-center justify-between">
+        <a href="#hero" class="group flex items-center gap-3">
+          <div class="relative h-10 w-10 overflow-hidden rounded-sm border border-crimson/50 shadow-red-glow">
+            <img src="assets/avatar.jpg" alt="Siege" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-crimson/10 group-hover:bg-transparent transition"></div>
+          </div>
+          <div class="leading-none">
+            <span class="font-display text-lg md:text-xl font-bold tracking-widest text-frost group-hover:text-neon transition-colors">SIEGE</span>
+            <span class="block font-mono text-[10px] tracking-[0.25em] text-crimson/80">DIGITAL ARTIST</span>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="#about" class="nav-link">About</a>
+          <a href="#gallery" class="nav-link">Gallery</a>
+          <a href="#commissions" class="nav-link">Prices</a>
+          <a href="#contact" class="nav-link">Contact</a>
+          <a href="#commissions" class="ml-4 btn-primary text-sm py-2 px-5">Commission Me</a>
+        </nav>
+
+        <button id="menu-btn" class="md:hidden relative z-50 flex h-10 w-10 items-center justify-center border border-crimson/40 bg-steel/80 text-crimson" aria-label="Open menu">
+          <svg id="menu-icon" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="close-icon" class="hidden h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden hidden border-t border-crimson/20 bg-ash/95 backdrop-blur-xl">
+      <nav class="flex flex-col px-4 py-4 gap-1">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
+        <a href="#commissions" class="mobile-link">Prices</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+        <a href="#commissions" class="btn-primary mt-3 text-center">Commission Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="hero-steam relative min-h-screen flex items-end md:items-center overflow-hidden">
+    <!-- Animated red glitch background -->
+    <div class="hero-bg absolute inset-0" aria-hidden="true">
+      <img
+        src="assets/rogueai.gif"
+        alt=""
+        class="hero-bg-gif h-full w-full object-cover"
+      />
+      <div class="hero-bg-tint absolute inset-0"></div>
+      <div class="hero-noise absolute inset-0"></div>
+      <div class="hero-glitch-slice hero-glitch-slice--1"></div>
+      <div class="hero-glitch-slice hero-glitch-slice--2"></div>
+      <div class="hero-glitch-slice hero-glitch-slice--3"></div>
+      <div class="hero-scanlines absolute inset-0"></div>
+      <div class="hero-scan-beam absolute inset-x-0"></div>
+      <!-- Lighter right side so character face stays visible next to title -->
+      <div class="absolute inset-0 bg-gradient-to-r from-void/95 via-void/55 to-void/15 md:via-void/40 md:to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-void/40"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-void/50 via-transparent to-void"></div>
+      <div class="hero-glow hero-glow--main"></div>
+      <div class="hero-glow hero-glow--side"></div>
+      <div class="hero-glow hero-glow--bottom"></div>
+    </div>
+
+    <div class="hero-corners" aria-hidden="true"></div>
+
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-32 md:py-0">
+      <div class="max-w-xl lg:max-w-2xl">
+        <div class="inline-flex items-center gap-2 mb-6 border border-crimson/60 bg-ash/70 backdrop-blur-sm px-3 py-1.5 font-mono text-xs tracking-widest text-neon shadow-red-glow">
+          <span class="status-dot"></span>
+          OPEN FOR COMMISSIONS
+        </div>
+
+        <h1 class="font-display font-black leading-none tracking-tight">
+          <span class="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-frost glitch-text glitch-text--active" data-text="SIEGE">SIEGE</span>
+          <span class="mt-3 block text-lg sm:text-xl md:text-2xl font-medium tracking-[0.12em] text-neon text-glow-red-strong animate-flicker">
+            Digital Artist · Character Designer
+          </span>
+        </h1>
+
+        <p class="mt-6 max-w-md font-body text-lg md:text-xl text-mist/90 leading-relaxed font-medium">
+          Anime character design, fan art, and VTuber-ready illustrations —
+          <span class="text-frost/90">clean linework, strong design, and polished presentation.</span>
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href="#commissions" class="btn-primary btn-lg group">
+            <span>Commission Me</span>
+            <svg class="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+          </a>
+          <a href="#gallery" class="btn-ghost btn-lg">View Gallery</a>
+        </div>
+
+        <div class="mt-12 flex flex-wrap gap-6 font-mono text-[11px] tracking-wider text-mist/50">
+          <span class="flex items-center gap-2"><span class="text-neon text-glow-red">▸</span> CHARACTER DESIGN</span>
+          <span class="flex items-center gap-2"><span class="text-neon text-glow-red">▸</span> FAN ART</span>
+          <span class="flex items-center gap-2"><span class="text-neon text-glow-red">▸</span> VTUBER MODELS</span>
+          <span class="flex items-center gap-2"><span class="text-neon text-glow-red">▸</span> ANIME STYLE</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="#about" class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-mist/40 hover:text-crimson transition-colors">
+      <span class="font-mono text-[10px] tracking-[0.3em]">SCROLL</span>
+      <div class="h-8 w-px bg-gradient-to-b from-neon to-transparent shadow-red-glow animate-pulse"></div>
+    </a>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about" class="relative py-24 md:py-32">
+    <div class="absolute inset-0 bg-ash"></div>
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-crimson/40 to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-crimson/40 to-transparent"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 md:mb-20">
+        <p class="font-mono text-xs tracking-[0.35em] text-crimson mb-3">01 · ABOUT</p>
+        <h2 class="section-title">About the Artist</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        <div class="lg:col-span-5 relative">
+          <div class="about-frame group">
+            <div class="absolute -inset-1 bg-gradient-to-br from-crimson/50 via-transparent to-violet/30 opacity-60 group-hover:opacity-100 transition duration-500"></div>
+            <div class="relative overflow-hidden border border-crimson/30 bg-steel">
+              <img
+                src="assets/pose-full.jpg"
+                alt="Siege original character"
+                class="w-full aspect-[3/4] object-cover object-top transition duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-void/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                <p class="font-display text-sm tracking-widest text-neon">SIEGE</p>
+                <p class="font-mono text-[10px] text-mist/60">Digital Artist &amp; Character Designer</p>
+              </div>
+              <span class="corner tl"></span>
+              <span class="corner tr"></span>
+              <span class="corner bl"></span>
+              <span class="corner br"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-8">
+          <div>
+            <h3 class="font-display text-2xl md:text-3xl font-bold text-frost mb-4 tracking-wide">
+              Professional anime illustration &amp; design
+            </h3>
+            <p class="text-lg md:text-xl text-mist leading-relaxed font-medium">
+              I'm <strong class="text-frost">Siege</strong>, a digital artist specializing in anime-style character design,
+              polished illustrations, and original characters. I work across personal OCs, commercial-ready art,
+              and high-quality <strong class="text-frost">fan art</strong> — including VTuber / Hololive-style pieces
+              with clean rendering and strong visual identity.
+            </p>
+            <p class="mt-4 text-lg text-mist leading-relaxed font-medium">
+              Whether you need a portrait, a full character sheet, fan art of your favorite series, or a
+              Live2D-ready VTuber model design, I focus on clear communication, reliable turnaround,
+              and artwork that holds up in portfolios, streams, and social media.
+            </p>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="stat-card">
+              <p class="font-mono text-[10px] tracking-widest text-crimson mb-1">SPECIALTY</p>
+              <p class="font-display text-sm md:text-base font-semibold">Character Design &amp; Fan Art</p>
+            </div>
+            <div class="stat-card">
+              <p class="font-mono text-[10px] tracking-widest text-crimson mb-1">STYLE</p>
+              <p class="font-display text-sm md:text-base font-semibold">Anime · Clean · Detailed</p>
+            </div>
+            <div class="stat-card">
+              <p class="font-mono text-[10px] tracking-widest text-crimson mb-1">STATUS</p>
+              <p class="font-display text-sm md:text-base font-semibold flex items-center gap-2">
+                <span class="status-dot"></span> Open for Commissions
+              </p>
+            </div>
+            <div class="stat-card">
+              <p class="font-mono text-[10px] tracking-widest text-crimson mb-1">CONTACT</p>
+              <p class="font-display text-sm md:text-base font-semibold">@mk7eam</p>
+            </div>
+          </div>
+
+          <p class="text-base text-mist/80 border-l-2 border-crimson/50 pl-4 leading-relaxed">
+            Available for original characters, anime fan art, stream assets, and VTuber model illustrations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section id="gallery" class="relative py-24 md:py-32">
+    <div class="absolute inset-0 bg-void"></div>
+    <div class="absolute top-1/2 left-0 h-96 w-96 -translate-y-1/2 rounded-full bg-crimson/5 blur-[120px]"></div>
+    <div class="absolute top-1/3 right-0 h-64 w-64 rounded-full bg-violet/5 blur-[100px]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <p class="font-mono text-xs tracking-[0.35em] text-crimson mb-3">02 · PORTFOLIO</p>
+          <h2 class="section-title">Gallery</h2>
+          <p class="mt-3 text-mist max-w-md text-lg">Original characters and anime fan art.</p>
+        </div>
+        <p class="font-mono text-xs text-mist/40 tracking-wider">CLICK TO EXPAND</p>
+      </div>
+
+      <!-- Gallery tabs -->
+      <div class="gallery-tabs mb-10 flex flex-wrap gap-3" role="tablist" aria-label="Gallery categories">
+        <button type="button" class="gallery-tab is-active" data-tab="originals" role="tab" aria-selected="true">
+          Originals / OC
+        </button>
+        <button type="button" class="gallery-tab" data-tab="fanart" role="tab" aria-selected="false">
+          Fan Art
+        </button>
+      </div>
+
+      <!-- Originals -->
+      <div id="gallery-originals" class="gallery-panel" data-panel="originals" role="tabpanel">
+        <p class="mb-6 text-mist text-base max-w-2xl">
+
+        </p>
+        <div class="gallery-grid">
+          <figure class="gallery-item gallery-featured group" data-src="assets/requiem-hero.jpg" data-title="Requiem" data-tag="Full Body · Original">
+            <img src="assets/requiem-hero.jpg" alt="Requiem original character" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Requiem Regalia</span>
+              <span class="font-mono text-[10px] text-crimson">FULL BODY · ORIGINAL</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/pose-full.jpg" data-title="Casual Pose" data-tag="Full Body · OC">
+            <img src="assets/pose-full.jpg" alt="Casual full body pose" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Casual Pose</span>
+              <span class="font-mono text-[10px] text-crimson">FULL BODY · OC</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/pose-reach.jpg" data-title="Dynamic Reach" data-tag="Dynamic Pose">
+            <img src="assets/pose-reach.jpg" alt="Dynamic reach pose" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Dynamic Reach</span>
+              <span class="font-mono text-[10px] text-crimson">DYNAMIC POSE</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/avatar.jpg" data-title="Portrait Study" data-tag="Portrait">
+            <img src="assets/avatar.jpg" alt="Portrait study" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Portrait Study</span>
+              <span class="font-mono text-[10px] text-crimson">PORTRAIT</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/what-really.jpg" data-title="Expression Sheet" data-tag="Expression">
+            <img src="assets/what-really.jpg" alt="Expression piece" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Expression</span>
+              <span class="font-mono text-[10px] text-crimson">EXPRESSION</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/requiem-ref.jpg" data-title="Character Reference" data-tag="Character Sheet">
+            <img src="assets/requiem-ref.jpg" alt="Character reference" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Character Reference</span>
+              <span class="font-mono text-[10px] text-crimson">CHARACTER SHEET</span>
+            </figcaption>
+          </figure>
+
+                    <figure class="gallery-item group" data-src="assets/export-2.gif" data-title="Birthday" data-tag="Animation">
+            <img src="assets/export-2.gif" alt="HBD 2024" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Birthday animation</span>
+              <span class="font-mono text-[10px] text-crimson">ANIMATION</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/wave.gif" data-title="Animated Wave" data-tag="Animation">
+            <img src="assets/wave.gif" alt="Animated wave" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Animated Wave</span>
+              <span class="font-mono text-[10px] text-crimson">ANIMATION</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Fan Art -->
+      <div id="gallery-fanart" class="gallery-panel hidden" data-panel="fanart" role="tabpanel" hidden>
+        <p class="mb-6 text-mist text-base max-w-2xl">
+          Selected Hololive and anime fan art. All fan works are non-commercial portfolio pieces unless otherwise licensed.
+        </p>
+        <div class="gallery-grid">
+          <figure class="gallery-item gallery-featured group" data-src="assets/fanart/akirose.jpg" data-title="Aki Rosenthal with a rose" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/akirose.jpg" alt="Hololive fan art — Aki Rosenthal" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Aki Rosenthal</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/gyaru.jpg" data-title="Aki Rosenthal × Marine" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/gyaru.jpg" alt="Haachama and Marine fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Aki Rosenthal × Marine</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/bunnies.jpg" data-title="Bunny Girls" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/bunnies.jpg" alt="Hololive bunny girl fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Bunny Girls</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/watame.jpg" data-title="Tsunomaki Watame" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/watame.jpg" alt="Watame fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Tsunomaki Watame</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/yukata.jpg" data-title="Yukata Illustration" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/yukata.jpg" alt="Yukata Hololive fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Yukata Aki Rosenthal</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/coco.jpg" data-title="Kiryu Coco" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/coco.jpg" alt="Kiryu Coco fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Kiryu Coco</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/rushia.jpg" data-title="Uruha Rushia" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/rushia.jpg" alt="Rushia fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Uruha Rushia</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/usada.jpg" data-title="Usada Pekora" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/usada.jpg" alt="Usada Pekora fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Usada Pekora</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/goodboy.jpg" data-title="Goodboy Power" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/goodboy.jpg" alt="Goodboy Power fan art" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">My power is over a milion</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-item group" data-src="assets/fanart/akirose998.jpg" data-title="Aki Rosenthal 998k" data-tag="Hololive Fan Art">
+            <img src="assets/fanart/akirose998.jpg" alt="Aki Rosenthal Swimsut" loading="lazy" />
+            <figcaption class="gallery-caption">
+              <span class="font-display text-sm tracking-wider">Swimsuit</span>
+              <span class="font-mono text-[10px] text-crimson">HOLOLIVE FAN ART</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <div class="lightbox-meta">
+      <p id="lightbox-title" class="font-display tracking-wider text-lg"></p>
+      <p id="lightbox-tag" class="font-mono text-xs text-crimson tracking-widest"></p>
+    </div>
+  </div>
+
+  <!-- ========== COMMISSIONS / PRICES ========== -->
+  <section id="commissions" class="relative py-24 md:py-32">
+    <div class="absolute inset-0 bg-ash"></div>
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-crimson/40 to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-crimson/40 to-transparent"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-16 md:mb-20">
+        <p class="font-mono text-xs tracking-[0.35em] text-crimson mb-3">03 · COMMISSIONS</p>
+        <h2 class="section-title">Commission Prices</h2>
+        <p class="mt-3 text-mist max-w-2xl text-lg">
+          Starting rates for standard work. Final quotes depend on complexity, deadline, and commercial usage.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7">
+        <!-- Portrait -->
+        <article class="mission-card group">
+          <div class="mission-header">
+            <span class="font-mono text-[10px] tracking-[0.25em] text-crimson">PACKAGE 01</span>
+            <span class="mission-badge">PORTRAIT</span>
+          </div>
+          <h3 class="font-display text-xl font-bold tracking-wide mt-4 mb-2">Portrait / Bust</h3>
+          <p class="text-mist text-base mb-6 leading-relaxed">
+            Head-and-shoulders illustration for icons, profiles, stream panels, and character close-ups.
+          </p>
+          <ul class="space-y-2 mb-8 font-mono text-sm text-mist/80">
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Bust / headshot</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Simple or gradient bg</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> 1 character</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> High-res PNG</li>
+          </ul>
+          <div class="mt-auto flex items-end justify-between border-t border-crimson/20 pt-5">
+            <div>
+              <p class="font-mono text-[10px] text-mist/50 tracking-wider">STARTING AT</p>
+              <p class="font-display text-2xl font-bold text-neon">$65<span class="text-sm text-mist/60">+</span></p>
+            </div>
+            <a href="#contact" class="btn-ghost text-sm py-2 px-4">Request</a>
+          </div>
+        </article>
+
+        <!-- Full Body -->
+        <article class="mission-card mission-featured group">
+          <div class="mission-header">
+            <span class="font-mono text-[10px] tracking-[0.25em] text-neon">PACKAGE 02</span>
+            <span class="mission-badge mission-badge-hot">POPULAR</span>
+          </div>
+          <h3 class="font-display text-xl font-bold tracking-wide mt-4 mb-2">Full Body</h3>
+          <p class="text-mist text-base mb-6 leading-relaxed">
+            Complete character illustration with pose and outfit. Ideal for OCs, fan art, and portfolio pieces.
+          </p>
+          <ul class="space-y-2 mb-8 font-mono text-sm text-mist/80">
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Full body pose</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Detailed outfit</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Simple / themed bg</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Commercial options</li>
+          </ul>
+          <div class="mt-auto flex items-end justify-between border-t border-crimson/30 pt-5">
+            <div>
+              <p class="font-mono text-[10px] text-mist/50 tracking-wider">STARTING AT</p>
+              <p class="font-display text-2xl font-bold text-neon">$130<span class="text-sm text-mist/60">+</span></p>
+            </div>
+            <a href="#contact" class="btn-primary text-sm py-2 px-4">Request</a>
+          </div>
+        </article>
+
+        <!-- Scene -->
+        <article class="mission-card group">
+          <div class="mission-header">
+            <span class="font-mono text-[10px] tracking-[0.25em] text-crimson">PACKAGE 03</span>
+            <span class="mission-badge">COMPLEX</span>
+          </div>
+          <h3 class="font-display text-xl font-bold tracking-wide mt-4 mb-2">Scene / Complex</h3>
+          <p class="text-mist text-base mb-6 leading-relaxed">
+            Multi-character scenes, detailed environments, or full illustration packages with variants.
+          </p>
+          <ul class="space-y-2 mb-8 font-mono text-sm text-mist/80">
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Multi-character / scene</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Complex backgrounds</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Expression options</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Priority scheduling</li>
+          </ul>
+          <div class="mt-auto flex items-end justify-between border-t border-crimson/20 pt-5">
+            <div>
+              <p class="font-mono text-[10px] text-mist/50 tracking-wider">STARTING AT</p>
+              <p class="font-display text-2xl font-bold text-neon">$220<span class="text-sm text-mist/60">+</span></p>
+            </div>
+            <a href="#contact" class="btn-ghost text-sm py-2 px-4">Request</a>
+          </div>
+        </article>
+
+        <!-- VTuber Model -->
+        <article class="mission-card group">
+          <div class="mission-header">
+            <span class="font-mono text-[10px] tracking-[0.25em] text-crimson">PACKAGE 04</span>
+            <span class="mission-badge">VTUBER</span>
+          </div>
+          <h3 class="font-display text-xl font-bold tracking-wide mt-4 mb-2">VTuber Model</h3>
+          <p class="text-mist text-base mb-6 leading-relaxed">
+            Live2D-ready character design (half-body). Layered illustration prepared for rigger handoff.
+          </p>
+          <ul class="space-y-2 mb-8 font-mono text-sm text-mist/80">
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Half-body model art</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Live2D-ready layers</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Expression set (base)</li>
+            <li class="flex items-center gap-2"><span class="text-crimson">▸</span> Rigging not included*</li>
+          </ul>
+          <div class="mt-auto flex items-end justify-between border-t border-crimson/20 pt-5">
+            <div>
+              <p class="font-mono text-[10px] text-mist/50 tracking-wider">STARTING AT</p>
+              <p class="font-display text-2xl font-bold text-neon">$650<span class="text-sm text-mist/60">+</span></p>
+            </div>
+            <a href="#contact" class="btn-ghost text-sm py-2 px-4">Request</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pricing notes -->
+      <div class="mt-12 border border-crimson/20 bg-steel/50 p-6 md:p-8 space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
+          <div class="flex-1 space-y-3">
+            <p class="font-mono text-[10px] tracking-[0.3em] text-crimson">PRICING NOTES</p>
+            <p class="text-mist text-base leading-relaxed">
+              Rates align with mid-tier anime commission markets (portraits ~$50–80, full bodies ~$100–180,
+              complex scenes ~$180–300+, Live2D-ready half-body model art ~$500–900). Your final quote may
+              be higher for extra characters, heavy detail, rush delivery, or commercial rights.
+            </p>
+            <p class="text-mist text-base leading-relaxed">
+              <strong class="text-frost">Fan art commissions</strong> use the same package rates as original work.
+              <strong class="text-frost">Full-body VTuber models</strong> typically start around <strong class="text-neon">$950+</strong>.
+              Live2D rigging can be arranged separately or referred to a rigger.
+            </p>
+            <p class="text-mist text-sm leading-relaxed text-mist/70">
+              50% deposit to reserve a slot · Typical turnaround 1–3 weeks · Revisions included per package agreement
+            </p>
+          </div>
+          <a href="https://x.com/mk7eam" target="_blank" rel="noopener noreferrer" class="btn-primary whitespace-nowrap shrink-0 self-start">
+            DM on X / Twitter
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="relative py-24 md:py-32">
+    <div class="absolute inset-0 bg-void"></div>
+    <div class="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-crimson/10 blur-[120px]"></div>
+    <div class="absolute top-1/4 left-0 h-60 w-60 rounded-full bg-cyan/5 blur-[100px]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-16">
+        <p class="font-mono text-xs tracking-[0.35em] text-crimson mb-3">04 · CONTACT</p>
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="mt-3 text-mist max-w-xl text-lg">Ready to commission? Send the details below or message me on X.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16">
+<<<<<<< HEAD
+        <form id="contact-form" action="https://formspree.io/f/mqerbdyy" method="POST" class="space-y-5">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm mb-1">Your Name</label>
+              <input type="text" name="name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Your name" />
+            </div>
+            <div>
+              <label class="block text-sm mb-1">Email</label>
+              <input type="email" name="email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="you@email.com" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm mb-1">Commission Type</label>
+            <select name="commission-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3">
+              <option value="Portrait">Portrait / Bust</option>
+              <option value="Full Body">Full Body</option>
+              <option value="Scene">Scene / Complex</option>
+              <option value="VTuber">VTuber Model</option>
+              <option value="Other">Other / Custom</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm mb-1">Project Details</label>
+            <textarea name="message" rows="6" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Describe your idea, references, deadline, etc..."></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-4 rounded-xl font-medium text-lg">
+            Send Commission Request
+          </button>
+=======
+        <form id="contact-form" class="space-y-5" novalidate>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="field">
+              <label for="name" class="field-label">Name</label>
+              <input type="text" id="name" name="name" required placeholder="Your name" class="field-input" />
+            </div>
+            <div class="field">
+              <label for="email" class="field-label">Email</label>
+              <input type="email" id="email" name="email" required placeholder="you@domain.com" class="field-input" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="type" class="field-label">Commission Type</label>
+            <select id="type" name="type" class="field-input">
+              <option value="portrait">Portrait / Bust ($65+)</option>
+              <option value="fullbody" selected>Full Body ($130+)</option>
+              <option value="scene">Scene / Complex ($220+)</option>
+              <option value="fanart">Fan Art</option>
+              <option value="vtuber">VTuber Model ($650+)</option>
+              <option value="other">Custom / Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message" class="field-label">Project Details</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Describe your character, references, pose, deadline, and usage..." class="field-input resize-y min-h-[120px]"></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full sm:w-auto btn-lg">
+            Send Request
+          </button>
+          <p id="form-status" class="font-mono text-sm hidden" role="status"></p>
+>>>>>>> 2cf4adae716fe877da4cbd23fb9ec83a64b48a82
+        </form>
+
+        <div class="space-y-6">
+          <div class="border border-crimson/25 bg-steel/40 p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 h-32 w-32 bg-crimson/10 blur-3xl"></div>
+            <p class="font-mono text-[10px] tracking-[0.3em] text-crimson mb-4">PRIMARY CONTACT</p>
+            <div class="space-y-4 relative">
+              <a href="https://x.com/mk7eam" target="_blank" rel="noopener noreferrer" class="contact-link group">
+                <div class="flex h-12 w-12 items-center justify-center border border-crimson/40 bg-ash group-hover:border-crimson group-hover:shadow-red-glow transition">
+                  <svg class="h-5 w-5 text-crimson" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+                </div>
+                <div>
+                  <p class="font-display text-sm tracking-wider group-hover:text-neon transition-colors">X / Twitter</p>
+                  <p class="font-mono text-xs text-mist/60">@mk7eam · Fastest response</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-crimson/25 bg-steel/40 p-6 md:p-8">
+            <p class="font-mono text-[10px] tracking-[0.3em] text-crimson mb-4">RESPONSE TIME</p>
+            <p class="text-mist leading-relaxed">
+              Expect a reply within <strong class="text-frost">24–48 hours</strong>.
+              Please include references, preferred pose, and how you plan to use the art for a faster quote.
+            </p>
+            <div class="mt-6 flex items-center gap-3">
+              <img src="assets/wave.gif" alt="Siege waving" class="h-20 w-20 object-cover border border-crimson/30 bg-slate" />
+              <p class="font-mono text-xs text-mist/50 leading-relaxed">
+                Looking forward to<br/>working with you.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="relative border-t border-crimson/20 bg-ash">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/avatar.jpg" alt="" class="h-8 w-8 object-cover border border-crimson/40" />
+          <div>
+            <p class="font-display text-sm tracking-widest font-bold">SIEGE</p>
+            <p class="font-mono text-[10px] text-mist/50 tracking-wider">DIGITAL ARTIST · CHARACTER DESIGNER</p>
+          </div>
+        </div>
+        <nav class="flex flex-wrap justify-center gap-6 font-mono text-xs tracking-wider text-mist/50">
+          <a href="#about" class="hover:text-crimson transition-colors">About</a>
+          <a href="#gallery" class="hover:text-crimson transition-colors">Gallery</a>
+          <a href="#commissions" class="hover:text-crimson transition-colors">Prices</a>
+          <a href="#contact" class="hover:text-crimson transition-colors">Contact</a>
+        </nav>
+        <p class="font-mono text-[10px] text-mist/40 tracking-wider">
+          © <span id="year"></span> SIEGE · ALL RIGHTS RESERVED
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
