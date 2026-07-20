@@ -163,7 +163,42 @@
 
   // ---------- Contact form ----------
   const form = document.getElementById('contact-form');
-  const formStatus = document.getElementById('form-status');
+
+  // ---------- Form confirmation modal ----------
+  const formModal = document.getElementById('form-modal');
+  const formModalIcon = document.getElementById('form-modal-icon');
+  const formModalTitle = document.getElementById('form-modal-title');
+  const formModalText = document.getElementById('form-modal-text');
+  const formModalClose = document.getElementById('form-modal-close');
+  const formModalOk = document.getElementById('form-modal-ok');
+
+  function openFormModal(isSuccess, title, text) {
+    if (!formModal) return;
+    formModal.classList.remove('is-success', 'is-error');
+    formModal.classList.add(isSuccess ? 'is-success' : 'is-error');
+    if (formModalIcon) formModalIcon.textContent = isSuccess ? '✓' : '!';
+    if (formModalTitle) formModalTitle.textContent = title;
+    if (formModalText) formModalText.textContent = text;
+    formModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFormModal() {
+    if (!formModal) return;
+    formModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  if (formModalClose) formModalClose.addEventListener('click', closeFormModal);
+  if (formModalOk) formModalOk.addEventListener('click', closeFormModal);
+  if (formModal) {
+    formModal.addEventListener('click', (e) => {
+      if (e.target === formModal) closeFormModal();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeFormModal();
+  });
 
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -173,11 +208,16 @@
       const message = form.message.value.trim();
 
       if (!name || !email || !message) {
-        showStatus('Please fill in all required fields.', true);
+        openFormModal(false, 'Missing Info', 'Please fill in all required fields.');
         return;
       }
 
-      showStatus('Sending your request…', false);
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.dataset.originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending…';
+      }
 
       fetch(form.action, {
         method: 'POST',
@@ -186,7 +226,11 @@
       })
         .then((response) => {
           if (response.ok) {
-            showStatus("Thanks! Your request has been sent — I'll get back to you soon.", false);
+            openFormModal(
+              true,
+              'Request Sent',
+              "Thanks! Your commission request has been sent — I'll get back to you soon."
+            );
             form.reset();
           } else {
             response.json().then((data) => {
@@ -194,23 +238,30 @@
                 data && data.errors
                   ? data.errors.map((err) => err.message).join(', ')
                   : 'Something went wrong. Please try again or DM @mk7eam on X.';
-              showStatus(msg, true);
+              openFormModal(false, 'Submission Failed', msg);
             }).catch(() => {
-              showStatus('Something went wrong. Please try again or DM @mk7eam on X.', true);
+              openFormModal(
+                false,
+                'Submission Failed',
+                'Something went wrong. Please try again or DM @mk7eam on X.'
+              );
             });
           }
         })
         .catch(() => {
-          showStatus('Network error. Please try again or DM @mk7eam on X.', true);
+          openFormModal(
+            false,
+            'Network Error',
+            'Please check your connection and try again, or DM @mk7eam on X.'
+          );
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = submitBtn.dataset.originalText;
+          }
         });
     });
-  }
-
-  function showStatus(text, isError) {
-    if (!formStatus) return;
-    formStatus.textContent = text;
-    formStatus.classList.remove('hidden');
-    formStatus.style.color = isError ? '#ff2a4a' : '#22c55e';
   }
 
   // ---------- Particle canvas ----------
