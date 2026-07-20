@@ -646,70 +646,37 @@
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10 lg:gap-16">
-<<<<<<< HEAD
         <form id="contact-form" action="https://formspree.io/f/mqerbdyy" method="POST" class="space-y-5">
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label class="block text-sm mb-1">Your Name</label>
-              <input type="text" name="name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Your name" />
-            </div>
-            <div>
-              <label class="block text-sm mb-1">Email</label>
-              <input type="email" name="email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="you@email.com" />
-            </div>
-          </div>
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label class="block text-sm mb-1">Your Name</label>
+      <input type="text" name="name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Your name" />
+    </div>
+    <div>
+      <label class="block text-sm mb-1">Email</label>
+      <input type="email" name="email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="you@email.com" />
+    </div>
+  </div>
 
-          <div>
-            <label class="block text-sm mb-1">Commission Type</label>
-            <select name="commission-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3">
-              <option value="Portrait">Portrait / Bust</option>
-              <option value="Full Body">Full Body</option>
-              <option value="Scene">Scene / Complex</option>
-              <option value="VTuber">VTuber Model</option>
-              <option value="Other">Other / Custom</option>
-            </select>
-          </div>
+  <div>
+    <label class="block text-sm mb-1">Commission Type</label>
+    <select name="commission-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3">
+      <option value="Portrait">Portrait / Bust</option>
+      <option value="Full Body">Full Body</option>
+      <option value="Scene">Scene / Complex</option>
+      <option value="VTuber">VTuber Model</option>
+      <option value="Other">Other / Custom</option>
+    </select>
+  </div>
 
-          <div>
-            <label class="block text-sm mb-1">Project Details</label>
-            <textarea name="message" rows="6" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Describe your idea, references, deadline, etc..."></textarea>
-          </div>
+  <div>
+    <label class="block text-sm mb-1">Project Details</label>
+    <textarea name="message" rows="6" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-5 py-3" placeholder="Describe your idea, references, deadline, etc..."></textarea>
+  </div>
 
-          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-4 rounded-xl font-medium text-lg">
-            Send Commission Request
-          </button>
-=======
-        <form id="contact-form" class="space-y-5" novalidate>
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div class="field">
-              <label for="name" class="field-label">Name</label>
-              <input type="text" id="name" name="name" required placeholder="Your name" class="field-input" />
-            </div>
-            <div class="field">
-              <label for="email" class="field-label">Email</label>
-              <input type="email" id="email" name="email" required placeholder="you@domain.com" class="field-input" />
-            </div>
-          </div>
-          <div class="field">
-            <label for="type" class="field-label">Commission Type</label>
-            <select id="type" name="type" class="field-input">
-              <option value="portrait">Portrait / Bust ($65+)</option>
-              <option value="fullbody" selected>Full Body ($130+)</option>
-              <option value="scene">Scene / Complex ($220+)</option>
-              <option value="fanart">Fan Art</option>
-              <option value="vtuber">VTuber Model ($650+)</option>
-              <option value="other">Custom / Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="message" class="field-label">Project Details</label>
-            <textarea id="message" name="message" rows="5" required placeholder="Describe your character, references, pose, deadline, and usage..." class="field-input resize-y min-h-[120px]"></textarea>
-          </div>
-          <button type="submit" class="btn-primary w-full sm:w-auto btn-lg">
-            Send Request
-          </button>
-          <p id="form-status" class="font-mono text-sm hidden" role="status"></p>
->>>>>>> 2cf4adae716fe877da4cbd23fb9ec83a64b48a82
+  <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-4 rounded-xl font-medium text-lg">
+    Send Commission Request
+  </button>
         </form>
 
         <div class="space-y-6">

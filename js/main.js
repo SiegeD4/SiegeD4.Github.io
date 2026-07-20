@@ -170,7 +170,6 @@
       e.preventDefault();
       const name = form.name.value.trim();
       const email = form.email.value.trim();
-      const type = form.type.value;
       const message = form.message.value.trim();
 
       if (!name || !email || !message) {
@@ -178,29 +177,32 @@
         return;
       }
 
-      const typeLabels = {
-        portrait: 'Portrait / Bust',
-        fullbody: 'Full Body',
-        scene: 'Scene / Complex',
-        fanart: 'Fan Art',
-        vtuber: 'VTuber Model',
-        other: 'Custom / Other',
-      };
-      const body = [
-        `Commission request from ${name}`,
-        `Email: ${email}`,
-        `Type: ${typeLabels[type] || type}`,
-        '',
-        message,
-      ].join('\n');
+      showStatus('Sending your request…', false);
 
-      const mailto = `mailto:?subject=${encodeURIComponent(`[Commission] ${typeLabels[type] || type} — ${name}`)}&body=${encodeURIComponent(body)}`;
-
-      showStatus('Opening your mail client… You can also DM @mk7eam on X for a faster reply.', false);
-
-      window.setTimeout(() => {
-        window.location.href = mailto;
-      }, 400);
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      })
+        .then((response) => {
+          if (response.ok) {
+            showStatus("Thanks! Your request has been sent — I'll get back to you soon.", false);
+            form.reset();
+          } else {
+            response.json().then((data) => {
+              const msg =
+                data && data.errors
+                  ? data.errors.map((err) => err.message).join(', ')
+                  : 'Something went wrong. Please try again or DM @mk7eam on X.';
+              showStatus(msg, true);
+            }).catch(() => {
+              showStatus('Something went wrong. Please try again or DM @mk7eam on X.', true);
+            });
+          }
+        })
+        .catch(() => {
+          showStatus('Network error. Please try again or DM @mk7eam on X.', true);
+        });
     });
   }
 
