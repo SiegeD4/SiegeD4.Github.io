@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Siege icon">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff2a4a"/>
+      <stop offset="70%" stop-color="#c8102e"/>
+      <stop offset="100%" stop-color="#5a0612"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="10" fill="#050507"/>
+  <rect x="6" y="6" width="116" height="116" rx="8" fill="none" stroke="#e11d3a" stroke-opacity="0.5" stroke-width="2"/>
+  <circle cx="64" cy="64" r="34" fill="#e11d3a" opacity="0.15"/>
+  <!-- Compact S -->
+  <path d="M84 38 C72 30 48 30 40 42 C34 52 38 62 50 66 L70 74 C80 78 82 88 74 96 C66 105 46 106 36 96 L30 102 C44 116 76 116 90 100 C100 88 98 70 82 62 L62 54 C52 50 50 42 56 36 C62 30 76 32 84 38 Z" fill="#e8e8ec" filter="url(#glow)"/>
+  <!-- Eye -->
+  <g filter="url(#glow)">
+    <ellipse cx="64" cy="64" rx="16" ry="9" fill="#0a0a0c" stroke="#ff2a4a" stroke-width="2"/>
+    <circle cx="64" cy="64" r="5.5" fill="url(#g)"/>
+    <circle cx="64" cy="64" r="2.2" fill="#140308"/>
+    <circle cx="66" cy="62" r="1.2" fill="#fff" opacity="0.9"/>
+  </g>
+</svg>

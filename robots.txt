@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sieged4.github.io/Commissions/sitemap.xml

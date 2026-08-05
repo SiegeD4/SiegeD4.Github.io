@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" role="img" aria-label="Siege artist signature">
+  <defs>
+    <linearGradient id="ink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4f4f5"/>
+      <stop offset="100%" stop-color="#a1a1aa"/>
+    </linearGradient>
+    <linearGradient id="crimsonStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff2a4a"/>
+      <stop offset="100%" stop-color="#c8102e"/>
+    </linearGradient>
+    <filter id="sigGlow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="320" fill="#050507"/>
+
+  <!-- Signature path: stylized "Siege" brush script -->
+  <g filter="url(#sigGlow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- S -->
+    <path d="M210 110 C170 95 140 115 150 145 C162 178 210 175 230 160 C250 145 248 125 225 120" stroke="url(#ink)" stroke-width="8"/>
+    <!-- i stem -->
+    <path d="M270 125 L270 195" stroke="url(#ink)" stroke-width="7"/>
+    <!-- i dot as red eye -->
+    <ellipse cx="270" cy="100" rx="10" ry="6" fill="#0c0c10" stroke="#ff2a4a" stroke-width="2.5"/>
+    <circle cx="270" cy="100" r="3.5" fill="#ff2a4a"/>
+    <!-- e -->
+    <path d="M300 165 C300 140 335 130 350 148 C365 166 350 190 320 185 C305 182 300 172 300 165 Z" stroke="url(#ink)" stroke-width="7"/>
+    <path d="M300 162 H345" stroke="url(#ink)" stroke-width="5"/>
+    <!-- g -->
+    <path d="M390 150 C390 130 430 125 445 145 C460 165 445 195 410 195 C395 195 390 180 390 165 V220 C390 245 420 250 440 235" stroke="url(#ink)" stroke-width="7"/>
+    <!-- e -->
+    <path d="M470 165 C470 140 505 130 520 148 C535 166 520 190 490 185 C475 182 470 172 470 165 Z" stroke="url(#ink)" stroke-width="7"/>
+    <path d="M470 162 H515" stroke="url(#ink)" stroke-width="5"/>
+  </g>
+
+  <!-- Crimson underline flourish -->
+  <path
+    d="M145 230 C250 250 420 210 560 235 C600 242 640 250 680 240"
+    fill="none"
+    stroke="url(#crimsonStroke)"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    filter="url(#sigGlow)"
+    opacity="0.95"
+  />
+
+  <!-- Small tag -->
+  <text
+    x="400"
+    y="285"
+    text-anchor="middle"
+    font-family="Share Tech Mono, Consolas, monospace"
+    font-size="14"
+    letter-spacing="6"
+    fill="#e11d3a"
+    opacity="0.75"
+  >// ARTIST SIGNATURE</text>
+</svg>

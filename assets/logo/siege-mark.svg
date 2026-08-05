@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Siege logo mark">
+  <defs>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff4d6a" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#e11d3a" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#e11d3a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="steel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4f4f5"/>
+      <stop offset="55%" stop-color="#d4d4d8"/>
+      <stop offset="100%" stop-color="#a1a1aa"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff2a4a"/>
+      <stop offset="100%" stop-color="#8b0a1e"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background plate -->
+  <rect width="512" height="512" fill="#050507"/>
+  <rect x="28" y="28" width="456" height="456" fill="none" stroke="#e11d3a" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="40" y="40" width="432" height="432" fill="none" stroke="#e11d3a" stroke-opacity="0.2" stroke-width="1"/>
+
+  <!-- Soft red bloom behind eye -->
+  <circle cx="256" cy="256" r="140" fill="url(#eyeGlow)" opacity="0.55"/>
+
+  <!-- Angular S monogram -->
+  <path
+    d="M340 148
+       C300 118 210 118 176 156
+       C148 186 156 220 198 236
+       L286 268
+       C328 284 336 316 312 344
+       C284 376 212 380 172 352
+       L148 372
+       C200 420 310 420 354 372
+       C392 336 386 280 334 258
+       L246 226
+       C210 212 204 188 220 168
+       C240 144 300 144 330 168
+       Z"
+    fill="url(#steel)"
+    filter="url(#softGlow)"
+  />
+
+  <!-- Red slash accent through monogram -->
+  <path d="M148 360 L364 152" stroke="url(#blade)" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Stylized glowing red eye -->
+  <g filter="url(#softGlow)">
+    <ellipse cx="256" cy="256" rx="54" ry="30" fill="#0c0c10" stroke="#ff2a4a" stroke-width="3"/>
+    <circle cx="256" cy="256" r="18" fill="#ff2a4a"/>
+    <circle cx="256" cy="256" r="8" fill="#1a0508"/>
+    <circle cx="262" cy="250" r="4" fill="#fff" opacity="0.85"/>
+  </g>
+
+  <!-- Corner brackets -->
+  <path d="M56 96 V56 H96" fill="none" stroke="#ff2a4a" stroke-width="3"/>
+  <path d="M416 56 H456 V96" fill="none" stroke="#ff2a4a" stroke-width="3"/>
+  <path d="M56 416 V456 H96" fill="none" stroke="#ff2a4a" stroke-width="3"/>
+  <path d="M416 456 H456 V416" fill="none" stroke="#ff2a4a" stroke-width="3"/>
+</svg>

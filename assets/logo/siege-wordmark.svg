@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 240" role="img" aria-label="Siege wordmark">
+  <defs>
+    <linearGradient id="textFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fafafa"/>
+      <stop offset="100%" stop-color="#d4d4d8"/>
+    </linearGradient>
+    <linearGradient id="redLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff2a4a" stop-opacity="0"/>
+      <stop offset="15%" stop-color="#ff2a4a"/>
+      <stop offset="85%" stop-color="#e11d3a"/>
+      <stop offset="100%" stop-color="#e11d3a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="redGlow" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softRed" x="-30%" y="-80%" width="160%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="960" height="240" fill="#050507"/>
+
+  <!-- Glow plate -->
+  <ellipse cx="480" cy="118" rx="320" ry="70" fill="#e11d3a" opacity="0.12"/>
+
+  <!-- Wordmark -->
+  <text
+    x="480"
+    y="128"
+    text-anchor="middle"
+    font-family="Orbitron, Rajdhani, Arial Black, sans-serif"
+    font-size="92"
+    font-weight="800"
+    letter-spacing="18"
+    fill="url(#textFill)"
+    filter="url(#softRed)"
+  >SIEGE</text>
+
+  <!-- Red underline slash -->
+  <rect x="180" y="156" width="600" height="3" fill="url(#redLine)" filter="url(#redGlow)"/>
+
+  <!-- Mini red eye accent above I area -->
+  <g transform="translate(470 42)" filter="url(#redGlow)">
+    <ellipse cx="0" cy="0" rx="16" ry="9" fill="#0c0c10" stroke="#ff2a4a" stroke-width="2"/>
+    <circle cx="0" cy="0" r="5.5" fill="#ff2a4a"/>
+    <circle cx="0" cy="0" r="2.2" fill="#1a0508"/>
+  </g>
+
+  <!-- Subtitle -->
+  <text
+    x="480"
+    y="198"
+    text-anchor="middle"
+    font-family="Share Tech Mono, Consolas, monospace"
+    font-size="16"
+    letter-spacing="8"
+    fill="#e11d3a"
+    opacity="0.9"
+  >DIGITAL ARTIST</text>
+</svg>

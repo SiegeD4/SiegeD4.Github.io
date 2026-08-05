@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Siege Logo Preview</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050507;
+      color: #e4e4e7;
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+    }
+    h1 { font-size: 1.25rem; letter-spacing: 0.15em; color: #ff2a4a; }
+    p { color: #a1a1aa; max-width: 40rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .card {
+      border: 1px solid rgba(225, 29, 58, 0.35);
+      background: #0c0c10;
+      padding: 1.25rem;
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      color: #ff2a4a;
+      text-transform: uppercase;
+    }
+    .card img, .card object {
+      width: 100%;
+      height: auto;
+      display: block;
+      background:
+        linear-gradient(45deg, #14141a 25%, transparent 25%),
+        linear-gradient(-45deg, #14141a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #14141a 75%),
+        linear-gradient(-45deg, transparent 75%, #14141a 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+      background-color: #0a0a0c;
+    }
+    code { color: #a1a1aa; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <h1>SIEGE — Logo / Signature Options</h1>
+  <p>
+    AI image generation was unavailable (credits), so these are vector logos built to match your
+    dark cyberpunk site palette and red-eye OC motif. Open the SVG files in a browser or drop them into Photoshop.
+  </p>
+  <div class="grid">
+    <div class="card">
+      <h2>1 · Icon / Favicon</h2>
+      <img src="siege-icon.svg" alt="Siege icon" />
+      <code>siege-icon.svg</code>
+    </div>
+    <div class="card">
+      <h2>2 · Full Mark</h2>
+      <img src="siege-mark.svg" alt="Siege mark" />
+      <code>siege-mark.svg</code>
+    </div>
+    <div class="card">
+      <h2>3 · Wordmark</h2>
+      <img src="siege-wordmark.svg" alt="Siege wordmark" />
+      <code>siege-wordmark.svg</code>
+    </div>
+    <div class="card">
+      <h2>4 · Signature</h2>
+      <img src="siege-signature.svg" alt="Siege signature" />
+      <code>siege-signature.svg</code>
+    </div>
+    <div class="card">
+      <h2>5 · Transparent Icon</h2>
+      <img src="siege-icon-transparent.svg" alt="Siege transparent icon" />
+      <code>siege-icon-transparent.svg</code>
+    </div>
+  </div>
+</body>
+</html>
